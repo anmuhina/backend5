@@ -188,8 +188,8 @@ else {
   else {
     // Генерируем уникальный логин и пароль.
     // TODO: сделать механизм генерации, например функциями rand(), uniquid(), md5(), substr().
-    $login = '123';
-    $password = '123';
+    $login = substr(str_shuffle('abcdefghijklmnoPQRSTUVWXYZ1234567890'), 0, 5);
+    $password = substr(md5(uniqid(rand(1,9))), 0, 12);
     // Сохраняем в Cookies.
     setcookie('login', $login);
     setcookie('password', $password);
@@ -202,8 +202,8 @@ else {
     $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
     try {
-      $stmt = $db->prepare("INSERT INTO application SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ?, informed = ?");
-      $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], 1]);
+      $stmt = $db->prepare("INSERT INTO application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ?, informed = ?, login = ?, password = ?");
+      $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], 1, $login, $password]);
     }
     catch(PDOException $e) {
       print('Error : ' . $e->getMessage());
@@ -211,7 +211,7 @@ else {
     }
     $app_id = $db->lastInsertId();
     try{
-      $stmt = $db->prepare("REPLACE INTO abilities (id,name_of_ability) VALUES (10, 'Бессмертие'), (20, 'Прохождение сквозь стены'), (30, 'Левитация')");
+      $stmt = $db->prepare("REPLACE INTO ability1 (id,name_of_ability) VALUES (10, 'Бессмертие'), (20, 'Прохождение сквозь стены'), (30, 'Левитация')");
       $stmt-> execute();
     }
     catch (PDOException $e) {
@@ -219,7 +219,7 @@ else {
        exit();
     }
     try {
-      $stmt = $db->prepare("INSERT INTO link SET app_id = ?, ab_id = ?");
+      $stmt = $db->prepare("INSERT INTO application-ability SET app_id = ?, ab_id = ?");
       foreach ($_POST['abilities'] as $ability) {
         if ($ability=='Бессмертие')
         {$stmt -> execute([$app_id, 10]);}
