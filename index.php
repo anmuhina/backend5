@@ -219,7 +219,7 @@ else {
        exit();
     }
     try {
-      $stmt = $db->prepare("INSERT INTO application-ability SET app_id = ?, ab_id = ?");
+      $stmt = $db->prepare("INSERT INTO application_ability SET app_id = ?, ab_id = ?");
       foreach ($_POST['abilities'] as $ability) {
         if ($ability=='Бессмертие')
         {$stmt -> execute([$app_id, 10]);}
