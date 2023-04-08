@@ -15,10 +15,29 @@ if (!empty($_SESSION['login'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 ?>
 
-<form action="" method="post">
-  <input name="login" />
-  <input name="password" />
-  <input type="submit" value="Войти" />
+<style>
+  #data {
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 25px;
+  }
+  .forma {
+    margin: 0 auto;
+  }
+  .sub {
+    padding: 5px;
+    color: white;
+    margin-top: 10px;
+    background-color: rgb(255, 105, 180);
+  }
+</style>
+
+<form class="forma" action="" method="post">
+  <input id="data" name="login" />
+  <input id="data" name="password" />
+  <input id="data" class="sub" type="submit" value="Войти" />
 </form>
 
 <?php
