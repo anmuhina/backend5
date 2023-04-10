@@ -50,7 +50,9 @@ else {
   // Если все ок, то авторизуем пользователя.
   $_SESSION['login'] = $_POST['login'];
   // Записываем ID пользователя.
-  $_SESSION['uid'] = 123;
+  
+  //$_SESSION['uid'] = 123;
+  $_SESSION['uid'] = substr(md5(uniqid(rand(1,9))), 0, 3);;
 
   header('Location: ./');
 }
