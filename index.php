@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
   // Складываем предыдущие значения полей в массив, если есть.
   $values = array();
+  
   $values['name'] = empty($_COOKIE['name_value']) ? '' : strip_tags($_COOKIE['name_value']);
   $values['email'] = empty($_COOKIE['email_value']) ? '' : strip_tags($_COOKIE['email_value']);
   $values['birth_date'] = empty($_COOKIE['birthDate_value']) ? '' : $_COOKIE['birthDate_value'];
@@ -83,6 +84,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // TODO: загрузить данные пользователя из БД
     // и заполнить переменную $values,
     // предварительно санитизовав.
+     $user = 'u52811';
+     $pass = '8150350';
+     $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
+       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
+     
+     $sth = $db->prepare("SELECT name FROM application1");
+     $sth->execute();
+/* Извлечение всех оставшихся строк результирующего набора */
+print("Извлечение всех оставшихся строк результирующего набора:\n");
+$result = $sth->fetchAll();
+     
+       /*$values['name'] = strip_tags(mysqli_query($db, "select name from application1 where login=$_SESSION['login']"));
+       $values['email'] = strip_tags(mysqli_query($db, "select email from application1 where login=$_SESSION['login']"));
+       $values['birth_date'] = mysqli_query($db, "select birth_date from application1 where login=$_SESSION['login']");
+       $values['sex'] = mysqli_query($db, "select sex from application1 where login=$_SESSION['login']");
+       $values['amount_of_limbs'] = mysqli_query($db, "select amount_of_limbs from application1 where login=$_SESSION['login']");
+       $values['abilities'] = mysqli_query($db, "select abilities from application1 where login=$_SESSION['login']");
+       $values['biography'] = strip_tags(mysqli_query($db, "select biography from application1 where login=$_SESSION['login']"));
+       $values['informed'] = mysqli_query($db, "select name from application1 where login=$_SESSION['login']");*/
+  
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
   
