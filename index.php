@@ -114,16 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $res8 = $stmt8->execute([$_SESSION['login'],$_SESSION['uid']]);
      $informed = $res8->fetchAll();
     
-     $values (
-       ['name'] => strip_tags($name)
-       ['email'] => strip_tags($email)
-       ['birth_date'] => $birth_date
-       ['sex'] => $sex
-       ['amount_of_limbs'] => $amount_of_limbs
-       ['abilities'] => $abilities
-       ['biography'] => strip_tags($biography)
-       ['informed'] => $informed
-     )
+     $values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed];
      
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
