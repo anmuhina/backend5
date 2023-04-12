@@ -89,11 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
      
-     $sth = $db->prepare("SELECT name FROM application1");
-     $sth->execute();
-/* Извлечение всех оставшихся строк результирующего набора */
-print("Извлечение всех оставшихся строк результирующего набора:\n");
-$result = $sth->fetchAll();
+     $stmt = $db->prepare("SELECT name, email, birth_date, sex, amount_of_limbs, abilities, biography, informed from application1 join application-ability on (application1.id=application_ability.app_id) where login = ? and id=?");
+     $result = $stmt->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $values['name', 'email', 'birth_date', 'sex', 'amount_of_limbs', 'abilities', 'biography', 'informed'] = $result->fetchAll();
      
        /*$values['name'] = strip_tags(mysqli_query($db, "select name from application1 where login=$_SESSION['login']"));
        $values['email'] = strip_tags(mysqli_query($db, "select email from application1 where login=$_SESSION['login']"));
