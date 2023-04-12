@@ -44,15 +44,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 // Иначе, если запрос был методом POST, т.е. нужно сделать авторизацию с записью логина в сессию.
 else {
+   $user = 'u52811';
+   $pass = '8150350';
+   $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
+     [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
+  
   // TODO: Проверть есть ли такой логин и пароль в базе данных.
-  // Выдать сообщение об ошибках.
-
+  // Выдать сообщение об ошибкаx
+  $sth = $db->prepare("select login, password from application1 where login=? and password=?");
+  $res = $sth->execute([$_POST['login'], $_POST['password']]);
+  if ($res -> num_rows < 1) {
+    print("Необходима авторизация!");
+  }
+  
+  else {
   // Если все ок, то авторизуем пользователя.
   $_SESSION['login'] = $_POST['login'];
-  // Записываем ID пользователя.
   
+  // Записываем ID пользователя.
   //$_SESSION['uid'] = 123;
-  $_SESSION['uid'] = substr(md5(uniqid(rand(1,9))), 0, 3);;
+  $stmt=$db->prepare("select id from application1 where login=?");
+  $result=$stmt->execute([$_SESSION['login']]);
+  $_SESSION['uid'] = $result->fetchAll();
+  }
 
   header('Location: ./');
 }
