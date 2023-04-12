@@ -79,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_COOKIE['biography_value']);
   $values['informed'] = empty($_COOKIE['informed_value']) ? '' : $_COOKIE['informed_value'];
   
+  
    if (empty($errors) && !empty($_COOKIE[session_name()]) &&
       session_start() && !empty($_SESSION['login'])) {
     // TODO: загрузить данные пользователя из БД
@@ -113,8 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $stmt8 = $db->prepare("SELECT informed from application1 where login = ? and id=?");
      $res8 = $stmt8->execute([$_SESSION['login'],$_SESSION['uid']]);
      $informed = $res8->fetchAll();
+     
+     $stmt9 = $db->prepare("SELECT password from application1 where login = ? and id=?");
+     $res9 = $stmt9->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $password = $res9->fetchAll();
     
-     $values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed];
+     $values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed, "login"=>$_SESSION['login'], "password"=>$password];
      
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
@@ -217,7 +222,39 @@ else {
       session_start() && !empty($_SESSION['login'])) {
     // TODO: перезаписать данные в БД новыми данными,
     // кроме логина и пароля.
+     $user = 'u52811';
+     $pass = '8150350';
+     $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
+       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
+     
+     $stmt1 = $db->prepare("SELECT name from application1 where login = ? and id=?");
+     $res1 = $stmt1->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $name = $res1->fetchAll();
+     $stmt2 = $db->prepare("SELECT email from application1 where login = ? and id=?");
+     $res2 = $stmt2->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $email = $res2->fetchAll();
+     $stmt3 = $db->prepare("SELECT birth_date from application1 where login = ? and id=?");
+     $res3 = $stmt3->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $birth_date = $res3->fetchAll();
+     $stmt4 = $db->prepare("SELECT sex from application1 where login = ? and id=?");
+     $res4 = $stmt4->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $sex = $res4->fetchAll();
+     $stmt5 = $db->prepare("SELECT amount_of_limbs from application1 where login = ? and id=?");
+     $res5 = $stmt5->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $amount_of_limbs = $res5->fetchAll();
+     $stmt6 = $db->prepare("SELECT ab_id from application1 join application_ability on (application1.id=application_ability.app_id) where login = ? and id=?");
+     $res6 = $stmt6->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $abilities[] = $res6->fetchAll();
+     $stmt7 = $db->prepare("SELECT biography from application1 where login = ? and id=?");
+     $res7 = $stmt7->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $biography = $res7->fetchAll();
+     $stmt8 = $db->prepare("SELECT informed from application1 where login = ? and id=?");
+     $res8 = $stmt8->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $informed = $res8->fetchAll();
+     
+     $values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed];
   }
+  
   else {
     // Генерируем уникальный логин и пароль.
     // TODO: сделать механизм генерации, например функциями rand(), uniquid(), md5(), substr().
