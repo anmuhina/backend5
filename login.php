@@ -4,13 +4,16 @@ header('Content-Type: text/html; charset=UTF-8');
 
 session_start();
 
-if (!empty($_SESSION['login'])) {
+/*if (!empty($_SESSION['login'])) {
   // Если есть логин в сессии, то пользователь уже авторизован.
   // TODO: Сделать выход (окончание сессии вызовом session_destroy()
   //при нажатии на кнопку Выход).
+  
+  
+  
   // Делаем перенаправление на форму.
   header('Location: ./');
-}
+}*/
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 ?>
@@ -54,7 +57,7 @@ else {
   $sth = $db->prepare("select login, password from application1 where login=? and password=?");
   $res = $sth->execute([$_POST['login'], $_POST['password']]);
   if ($res -> num_rows < 1) {
-    print("Необходима авторизация!");
+    print($errors);
   }
   
   else {
@@ -62,11 +65,12 @@ else {
   $_SESSION['login'] = $_POST['login'];
   
   // Записываем ID пользователя.
-  //$_SESSION['uid'] = 123;
   $stmt=$db->prepare("select id from application1 where login=?");
   $result=$stmt->execute([$_SESSION['login']]);
   $_SESSION['uid'] = $result->fetchAll();
-  }
-
+  //}
+    
   header('Location: ./');
+  }
+    
 }
