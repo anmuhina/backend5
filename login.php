@@ -56,8 +56,9 @@ else {
   // Выдать сообщение об ошибкаx
   $sth = $db->prepare("select login, password from application1 where login=? and password=?");
   $res = $sth->execute([$_POST['login'], $_POST['password']]);
-  if ($res -> num_rows < 1) {
-    print($errors);
+  $res1=$res->fetchAll();
+  if ($res1 -> num_rows < 1) {
+    print("error");
   }
   
   else {
