@@ -59,6 +59,7 @@ else {
   $res1=$res->fetchAll();
   if ($res1 -> num_rows < 1) {
     print("error");
+    header('Location: ./');
   }
   
   else {
