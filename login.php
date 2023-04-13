@@ -14,7 +14,7 @@ if (!empty($_SESSION['login'])) {
   header('Location: ./');
 }
 
-else {
+//else {
   
   
 
@@ -85,4 +85,4 @@ else {
 
   
   
-}
+//}
