@@ -244,6 +244,10 @@ else {
       session_start() && !empty($_SESSION['login'])) {
     // TODO: перезаписать данные в БД новыми данными,
     // кроме логина и пароля.
+    
+    $log=serialize($_SESSION['login']);
+    $uid=$_SESSION['uid'];
+    
      $user = 'u52811';
      $pass = '8150350';
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
