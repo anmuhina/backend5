@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=UTF-8');
 
 session_start();
 
-if (!empty($_SESSION['login'])) {
+/*if (!empty($_SESSION['login'])) {
   // Если есть логин в сессии, то пользователь уже авторизован.
   // TODO: Сделать выход (окончание сессии вызовом session_destroy()
   //при нажатии на кнопку Выход)
@@ -12,7 +12,7 @@ if (!empty($_SESSION['login'])) {
   
   // Делаем перенаправление на форму.
   header('Location: ./');
-}
+}*/
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 ?>
