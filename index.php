@@ -250,8 +250,8 @@ else {
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
     
     try {
-    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ?"); 
-    $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography']]);
+    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? where login=?"); 
+    $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], $_SESSION['login']]);
     }
     catch (PDOException $e) {
        print('Error : ' . $e->getMessage());
@@ -259,14 +259,14 @@ else {
     }
     $app_id = $db->lastInsertId();
     try {
-      $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ?");
+      $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where login=?");
       foreach ($_POST['abilities'] as $ability) {
         if ($ability=='Бессмертие')
-        {$stmt -> execute([$app_id, 10]);}
+        {$stmt -> execute([$app_id, 10, $_SESSION['login']]);}
         else if ($ability=='Прохождение сквозь стены')
-        {$stmt -> execute([$app_id, 20]);}
+        {$stmt -> execute([$app_id, 20, $_SESSION['login']]);}
         else if ($ability=='Левитация')
-        {$stmt -> execute([$app_id, 30]);}
+        {$stmt -> execute([$app_id, 30, $_SESSION['login']]);}
       }
     }
     catch (PDOException $e) {
