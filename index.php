@@ -249,8 +249,11 @@ else {
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
     
+    $log=$_SESSION['login'];
+    $uid=$_SESSION['uid'];
+    
     try {
-    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? where login=$_SESSION['login']"); 
+    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? where login=$log and id=$uid"); 
     $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography']]);
     }
     catch (PDOException $e) {
@@ -259,7 +262,7 @@ else {
     }
     $app_id = $db->lastInsertId();
     try {
-      $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where login=$_SESSION['login']");
+      $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where login=$log and id=$uid");
       foreach ($_POST['abilities'] as $ability) {
         if ($ability=='Бессмертие')
         {$stmt -> execute([$app_id, 10]);}
