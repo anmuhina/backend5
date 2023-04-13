@@ -97,33 +97,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $stmt1 = $db->prepare("SELECT name from application1 where login = ? and id=?");
      $stmt1->execute([$_SESSION['login'],$_SESSION['uid']]);
      $name = $stmt1->fetchAll();
+     $values['name']=strip_tags($name);
+     
      $stmt2 = $db->prepare("SELECT email from application1 where login = ? and id=?");
      $stmt2->execute([$_SESSION['login'],$_SESSION['uid']]);
      $email = $stmt2->fetchAll();
+     $values['email']=strip_tags($email);
+     
      $stmt3 = $db->prepare("SELECT birth_date from application1 where login = ? and id=?");
      $stmt3->execute([$_SESSION['login'],$_SESSION['uid']]);
      $birth_date = $stmt3->fetchAll();
+     $values['birth_date']=$birth_date;
+     
      $stmt4 = $db->prepare("SELECT sex from application1 where login = ? and id=?");
      $stmt4->execute([$_SESSION['login'],$_SESSION['uid']]);
      $sex = $stmt4->fetchAll();
+     $values['sex']=$sex;
+     
      $stmt5 = $db->prepare("SELECT amount_of_limbs from application1 where login = ? and id=?");
      $stmt5->execute([$_SESSION['login'],$_SESSION['uid']]);
      $amount_of_limbs = $stmt5->fetchAll();
+     $values['amount_of_limbs']=$amount_of_limbs;
+     
      $stmt6 = $db->prepare("SELECT ab_id from application1 join application_ability on (application1.id=application_ability.app_id) where login = ? and id=?");
      $stmt6->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $abilities = $stmt6->fetchAll();
+     $abilities = serialize($stmt6->fetchAll());
+     $values['abilities']=unserialize($abilities);
+     
      $stmt7 = $db->prepare("SELECT biography from application1 where login = ? and id=?");
      $stmt7->execute([$_SESSION['login'],$_SESSION['uid']]);
      $biography = $stmt7->fetchAll();
+     $values['biography']=strip_tags($biography);
+     
      $stmt8 = $db->prepare("SELECT informed from application1 where login = ? and id=?");
      $stmt8->execute([$_SESSION['login'],$_SESSION['uid']]);
      $informed = $stmt8->fetchAll();
+     $values['informed']=$informed;
      
      $stmt9 = $db->prepare("SELECT password from application1 where login = ? and id=?");
      $stmt9->execute([$_SESSION['login'],$_SESSION['uid']]);
      $password = $stmt9->fetchAll();
+     $values['password']=$password;
+     
+     $values['login']=$_SESSION['login'];
     
-     $values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed, "login"=>$_SESSION['login'], "password"=>$password];
+     //$values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed, "login"=>$_SESSION['login'], "password"=>$password];
      
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
@@ -230,33 +248,33 @@ else {
      $pass = '8150350';
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
-     
-     $stmt1 = $db->prepare("SELECT name from application1 where login = ? and id=?");
-     $stmt1->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $name = $stmt1->fetchAll();
-     $stmt2 = $db->prepare("SELECT email from application1 where login = ? and id=?");
-     $stmt2->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $email = $stmt2->fetchAll();
-     $stmt3 = $db->prepare("SELECT birth_date from application1 where login = ? and id=?");
-     $stmt3->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $birth_date = $stmt3->fetchAll();
-     $stmt4 = $db->prepare("SELECT sex from application1 where login = ? and id=?");
-     $stmt4->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $sex = $stmt4->fetchAll();
-     $stmt5 = $db->prepare("SELECT amount_of_limbs from application1 where login = ? and id=?");
-     $stmt5->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $amount_of_limbs = $stmt5->fetchAll();
-     $stmt6 = $db->prepare("SELECT ab_id from application1 join application_ability on (application1.id=application_ability.app_id) where login = ? and id=?");
-     $stmt6->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $abilities = $stmt6->fetchAll();
-     $stmt7 = $db->prepare("SELECT biography from application1 where login = ? and id=?");
-     $stmt7->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $biography = $stmt7->fetchAll();
-     $stmt8 = $db->prepare("SELECT informed from application1 where login = ? and id=?");
-     $stmt8->execute([$_SESSION['login'],$_SESSION['uid']]);
-     $informed = $stmt8->fetchAll();
-     
-     $values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed, "login"=>$_SESSION['login'], "password"=>$_SESSION['password']];
+    
+    try {
+    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ?"); 
+    $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography']]);
+    }
+    catch (PDOException $e) {
+       print('Error : ' . $e->getMessage());
+       exit();
+    }
+    $app_id = $db->lastInsertId();
+    try {
+      $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ?");
+      foreach ($_POST['abilities'] as $ability) {
+        if ($ability=='Бессмертие')
+        {$stmt -> execute([$app_id, 10]);}
+        else if ($ability=='Прохождение сквозь стены')
+        {$stmt -> execute([$app_id, 20]);}
+        else if ($ability=='Левитация')
+        {$stmt -> execute([$app_id, 30]);}
+      }
+    }
+    catch (PDOException $e) {
+       print('Error : ' . $e->getMessage());
+       exit();
+    }
+    
+    
   }
   
   else {
