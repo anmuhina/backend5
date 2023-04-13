@@ -249,8 +249,10 @@ else {
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
     
-    $log=serialize($_SESSION['login']);
-    $uid=serialize($_SESSION['uid']);
+    //$log=serialize($_SESSION['login']);
+    //$uid=serialize($_SESSION['uid']);
+    $log=join('', $_SESSION['login']);
+    $uid=join('', $_SESSION['uid']);
     
     try {
     $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? where id=$uid and login=$log"); 
