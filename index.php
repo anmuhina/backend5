@@ -249,13 +249,11 @@ else {
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
     
-    //$log=serialize($_SESSION['login']);
-    //$uid=serialize($_SESSION['uid']);
-    $log=join('', $_SESSION['login']);
-    $uid=join('', $_SESSION['uid']);
+    $log=unserialize($_SESSION['login']);
+    $uid=$_SESSION['uid'];
     
     try {
-    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? where id=$uid and login=$log"); 
+    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? where login=$log"); 
     $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography']]);
     }
     catch (PDOException $e) {
