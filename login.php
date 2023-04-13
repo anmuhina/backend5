@@ -4,16 +4,15 @@ header('Content-Type: text/html; charset=UTF-8');
 
 session_start();
 
-/*if (!empty($_SESSION['login'])) {
+if (!empty($_SESSION['login'])) {
   // Если есть логин в сессии, то пользователь уже авторизован.
   // TODO: Сделать выход (окончание сессии вызовом session_destroy()
-  //при нажатии на кнопку Выход).
-  
+  //при нажатии на кнопку Выход)
   
   
   // Делаем перенаправление на форму.
   header('Location: ./');
-}*/
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 ?>
@@ -52,27 +51,30 @@ else {
    $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
      [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
   
+  $login=$_POST['login'];
+  $password=$_POST['password'];
+  
   // TODO: Проверть есть ли такой логин и пароль в базе данных.
   // Выдать сообщение об ошибкаx
   $sth = $db->prepare("select login, password from application1 where login=? and password=?");
-  $res = $sth->execute([$_POST['login'], $_POST['password']]);
-  $res1 = $res->fetchAll();
-  if ($res1 -> num_rows = 0) {
-    print("error");
-    //header('Location: ./');
+  $sth->execute([$login, $password]);
+  $res1 = $sth->fetchAll();
+  if (!$res1) {
+    echo '<p class="error">Нет такого пользователя! Проверьте корректность введенных логина и пароля.</p>';
   }
   
   else {
   // Если все ок, то авторизуем пользователя.
+  echo '<p> Поздравляем, вы прошли авторизацию!</p>';
   $_SESSION['login'] = $_POST['login'];
   
   // Записываем ID пользователя.
   $stmt=$db->prepare("select id from application1 where login=?");
-  $result=$stmt->execute([$_SESSION['login']]);
-  $_SESSION['uid'] = $result->fetchAll();
+  $stmt->execute([$_SESSION['login']]);
+  $_SESSION['uid'] = $stmt->fetchAll();
+    
   }
     
   header('Location: ./');
-  //}
     
 }
