@@ -56,31 +56,28 @@ else {
      [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
   
   $login=$_POST['login'];
-  $password=$_POST['password'];
+  $password=md5($_POST['password']);
   
   // TODO: Проверть есть ли такой логин и пароль в базе данных.
   // Выдать сообщение об ошибкаx
-  $sth = $db->prepare("select login, password from application1 where login=? and password=?");
+  $sth = $db->prepare("select login, id, password from application1 where login=? and password=?");
   $sth->execute([$login, $password]);
   $res1 = $sth->fetchAll();
-  if (!$res1) {
+  if (!$res1 || empty($res1[0]['id'])) {
     echo '<p class="error">Нет такого пользователя! Проверьте корректность введенных логина и пароля.</p>';
   }
-  
   else {
-  // Если все ок, то авторизуем пользователя.
-  echo '<p> Поздравляем, вы прошли авторизацию!</p>';
-  $_SESSION['login'] = $_POST['login'];
-  
-  // Записываем ID пользователя.
-  $stmt=$db->prepare("select id from application1 where login=?");
-  $stmt->execute([$_SESSION['login']]);
-  $_SESSION['uid'] = $stmt->fetchAll();
-    
+    // Если все ок, то авторизуем пользователя.
+    echo '<p> Поздравляем, вы прошли авторизацию!</p>';
+    $_SESSION['login'] = $_POST['login'];
+
+    // Записываем ID пользователя.
+    //$stmt=$db->prepare("select id from application1 where login=?");
+    //$stmt->execute([$_SESSION['login']]);
+    $_SESSION['uid'] = $res1[0]['id']; //$stmt->fetchAll();
+
+    header('Location: ./');
   }
-    
-  header('Location: ./');
-    
 }
 
   
