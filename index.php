@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Если есть параметр save, то выводим сообщение пользователю.
     $messages[] = 'Спасибо, результаты сохранены.';
     
-    if (!empty($_COOKIE['password'])) {
+    /*if (!empty($_COOKIE['password'])) {
       $messages[] = sprintf('Вы можете <a href="login.php">войти</a> с логином <strong>%s</strong>
         и паролем <strong>%s</strong> для изменения данных.',
         strip_tags($_COOKIE['login']),
         strip_tags($_COOKIE['password']));
-    }
+    }*/
     
   }
   // Складываем признак ошибок в массив.
@@ -80,8 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_COOKIE['biography_value']);
   $values['informed'] = empty($_COOKIE['informed_value']) ? '' : $_COOKIE['informed_value'];
   
-  //$values['login'] = empty($_COOKIE['login']) ? '' : $_COOKIE['login'];
-  //$values['password'] = empty($_COOKIE['password']) ? '' : $_COOKIE['password'];
+  $values['login'] = empty($_COOKIE['login']) ? '' : $_COOKIE['login'];
+  $values['password'] = empty($_COOKIE['password']) ? '' : $_COOKIE['password'];
   
   
    if (empty($errors) && !empty($_COOKIE[session_name()]) &&
@@ -145,6 +145,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
+  
+  
+  
+  //попробовать
+  else {
+    if (!empty($_COOKIE['password'])) {
+      $messages[] = sprintf('Вы можете <a href="login.php">войти</a> с логином <strong>%s</strong>
+        и паролем <strong>%s</strong> для изменения данных.',
+        strip_tags($_COOKIE['login']),
+        strip_tags($_COOKIE['password']));
+      //удаление кук сессии
+      setcookie('login', '', 100000);
+      setcookie('password', '', 100000);
+    }
+  }
+  
+  
   
   include('form.php');
 }
@@ -245,20 +262,17 @@ else {
     // TODO: перезаписать данные в БД новыми данными,
     // кроме логина и пароля.
     
-    $log=serialize($_SESSION['login']);
-    $uid=serialize($_SESSION['uid']);
-    
      $user = 'u52811';
      $pass = '8150350';
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
     
-    $log=serialize($_SESSION['login']);
+    //$log=serialize($_SESSION['login']);
     $uid=$_SESSION['uid'];
     
     try {
-    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? where login=$log and id=$uid"); 
-    $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography']]);
+    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? WHERE id = ?"); 
+    $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], $uid]);
     }
     catch (PDOException $e) {
        print('Error : ' . $e->getMessage());
