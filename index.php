@@ -145,8 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $values['login']=$_SESSION['login'];*/
      
      
-     $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where id=?");
-     $stmt->execute([$_SESSION['uid']]);
+     $uid=$_SESSION['uid'];
+     $log=$_SESSION['log'];
+     
+     $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where login=? and id=?");
+     $stmt->execute([$log,$uid]);
      $res=$stmt->fetchAll();
      $rows=$res->num_rows;
      $values['name']=$res[0]['name'];
