@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
      
-     $stmt1 = $db->prepare("SELECT name from application1 where id=?");
+     /*$stmt1 = $db->prepare("SELECT name from application1 where id=?");
      $stmt1->execute([$_SESSION['uid']]);
      $name = $stmt1->fetchAll();
      $values['name']=strip_tags($name);
@@ -142,7 +142,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $password = $stmt9->fetchAll();
      $values['password']=$password;
      
-     $values['login']=$_SESSION['login'];
+     $values['login']=$_SESSION['login'];*/
+     
+     
+     $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where id=?");
+     $stmt->execute([$_SESSION['uid']]);
+     $res=$stmt->fetchAll();
+     $rows=$res->num_rows;
+     $values['name']=$res[0]['name'];
+     $values['email']=$res[0]['email'];
+     $values['birth_date']=$res[0]['birth_date'];
+     $values['sex']=$res[0]['sex'];
+     $values['amount_of_limbs']=$res[0]['amount_of_limbs'];
+     
+     $arr = array();
+     for ($i = 0; $i < $rows; $i++) {
+       $arr[]=$res[$i]['ab_id'];
+     }
+     $arr1=serialize($arr);
+     $values['abilities']=unserialize($arr1);
+     
+     $values['biography']=$res[0]['biography'];
+     $values['informed']=$res[0]['informed'];
+     
+     
     
      //$values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed, "login"=>$_SESSION['login'], "password"=>$password];
      
@@ -281,7 +304,10 @@ else {
        print('Error : ' . $e->getMessage());
        exit();
     }
-    $app_id = $db->lastInsertId();
+    
+    //$app_id = $db->lastInsertId();
+    $app_id=$db->insert_id();
+    
     try {
       $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where app_id=$uid");
       foreach ($_POST['abilities'] as $ability) {
