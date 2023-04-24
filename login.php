@@ -9,19 +9,16 @@ if (!empty($_SESSION['login'])) {
   // TODO: Сделать выход (окончание сессии вызовом session_destroy()
   //при нажатии на кнопку Выход)
      
-  //echo '<p> Поздравляем, вы уже авторизованы! </p>';
-  print "пользователь авторизован";
+  echo '<p> Поздравляем, вы уже авторизованы! </p>';
   
   
-  unset($_SESSION['uid']);
-  unset($_SESSION['login']);
-  session_destroy();
+  //unset($_SESSION['uid']);
+  //unset($_SESSION['login']);
+  //session_destroy();
   
   // Делаем перенаправление на форму.
   header('Location: ./');
 }
-
-//else {
   
   
 
