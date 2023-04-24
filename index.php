@@ -195,8 +195,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         strip_tags($_COOKIE['login']),
         strip_tags($_COOKIE['password']));
       //удаление кук сессии
-      setcookie('login', '', 100000);
-      setcookie('password', '', 100000);
+      //setcookie('login', '', 100000);
+      //setcookie('password', '', 100000);
     }
   }
   
