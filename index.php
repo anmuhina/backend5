@@ -305,8 +305,7 @@ else {
        exit();
     }
     
-    //$app_id = $db->lastInsertId();
-    $app_id=$db->insert_id();
+    $app_id = $db->lastInsertId();
     
     try {
       $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where app_id=$uid");
