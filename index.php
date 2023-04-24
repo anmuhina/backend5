@@ -92,6 +92,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // TODO: загрузить данные пользователя из БД
     // и заполнить переменную $values,
     // предварительно санитизовав.
+     
+    setcookie('name_value', '', 100000);
+    setcookie('email_value', '', 100000);
+    setcookie('birthDate_value', '', 100000);
+    setcookie('sex_value', '', 100000);
+    setcookie('amountOfLimbs_value', '', 100000);
+    setcookie('abilities_value', '', 100000);
+    setcookie('biography_value', '', 100000);
+    setcookie('informed_value', '', 100000);
+     
      $user = 'u52811';
      $pass = '8150350';
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
