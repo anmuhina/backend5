@@ -9,18 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if (!empty($_COOKIE['save'])) {
     // Удаляем куку, указывая время устаревания в прошлом.
     setcookie('save', '', 100000);
-    // Если есть параметр save, то выводим сообщение пользователю.
+    setcookie('login', '', 100000);
+    setcookie('password', '', 100000);
+    // Выводим сообщение пользователю.
     $messages[] = 'Спасибо, результаты сохранены.';
-    
-    /*if (!empty($_COOKIE['password'])) {
+    // Если в куках есть пароль, то выводим сообщение.
+    if (!empty($_COOKIE['password'])) {
       $messages[] = sprintf('Вы можете <a href="login.php">войти</a> с логином <strong>%s</strong>
         и паролем <strong>%s</strong> для изменения данных.',
         strip_tags($_COOKIE['login']),
         strip_tags($_COOKIE['password']));
-      //удаление кук сессии
-      setcookie('login', '', 100000);
-      setcookie('password', '', 100000);
-    }*/
+    }
+  }
     
   }
   // Складываем признак ошибок в массив.
@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   
   
   //попробовать
-  else {
+  /*else {
     if (!empty($_COOKIE['password'])) {
       $messages[] = sprintf('Вы можете <a href="login.php">войти</a> с логином <strong>%s</strong>
         и паролем <strong>%s</strong> для изменения данных.',
@@ -198,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       setcookie('login', '', 100000);
       setcookie('password', '', 100000);
     }
-  }
+  }*/
   
   
   
