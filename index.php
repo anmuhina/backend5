@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Если есть параметр save, то выводим сообщение пользователю.
     $messages[] = 'Спасибо, результаты сохранены.';
     
-    if (!empty($_COOKIE['password'])) {
+    /*if (!empty($_COOKIE['password'])) {
       $messages[] = sprintf('Вы можете <a href="login.php">войти</a> с логином <strong>%s</strong>
         и паролем <strong>%s</strong> для изменения данных.',
         strip_tags($_COOKIE['login']),
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       //удаление кук сессии
       setcookie('login', '', 100000);
       setcookie('password', '', 100000);
-    }
+    }*/
     
   }
   // Складываем признак ошибок в массив.
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   
   
   //попробовать
-  /*else {
+  else {
     if (!empty($_COOKIE['password'])) {
       $messages[] = sprintf('Вы можете <a href="login.php">войти</a> с логином <strong>%s</strong>
         и паролем <strong>%s</strong> для изменения данных.',
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       setcookie('login', '', 100000);
       setcookie('password', '', 100000);
     }
-  }*/
+  }
   
   
   
