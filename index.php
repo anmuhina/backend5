@@ -92,15 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // и заполнить переменную $values,
     // предварительно санитизовав.
      
-    /*setcookie('name_value', '', 100000);
-    setcookie('email_value', '', 100000);
-    setcookie('birthDate_value', '', 100000);
-    setcookie('sex_value', '', 100000);
-    setcookie('amountOfLimbs_value', '', 100000);
-    setcookie('abilities_value', '', 100000);
-    setcookie('biography_value', '', 100000);
-    setcookie('informed_value', '', 100000);*/
-     
      $user = 'u52811';
      $pass = '8150350';
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
@@ -154,11 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $values['login']=$_SESSION['login'];*/
      
      
-     $uid=$_SESSION['uid'];
+     //$uid=$_SESSION['uid'];
      $log=$_SESSION['login'];
      
-     $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where login=? and id=?");
-     $stmt->execute([$log,$uid]);
+     $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where login=?");
+     $stmt->execute([$log]);
      $res=$stmt->fetchAll();
      $rows=$res->num_rows;
      $values['name']=$res[0]['name'];
@@ -183,24 +174,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
-  
-  
-  
-  //попробовать
-  /*else {
-    if (!empty($_COOKIE['password'])) {
-      $messages[] = sprintf('Вы можете <a href="login.php">войти</a> с логином <strong>%s</strong>
-        и паролем <strong>%s</strong> для изменения данных.',
-        strip_tags($_COOKIE['login']),
-        strip_tags($_COOKIE['password']));
-      //удаление кук сессии
-      setcookie('login', '', 100000);
-      setcookie('password', '', 100000);
-    }
-  }*/
-  
-  
-  
   include('form.php');
 }
 
