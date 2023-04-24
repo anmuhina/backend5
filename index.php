@@ -94,48 +94,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
        [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
      
-     $stmt1 = $db->prepare("SELECT name from application1 where login = ? and id=?");
-     $stmt1->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt1 = $db->prepare("SELECT name from application1 where id=?");
+     $stmt1->execute([$_SESSION['uid']]);
      $name = $stmt1->fetchAll();
      $values['name']=strip_tags($name);
      
-     $stmt2 = $db->prepare("SELECT email from application1 where login = ? and id=?");
-     $stmt2->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt2 = $db->prepare("SELECT email from application1 where id=?");
+     $stmt2->execute([$_SESSION['uid']]);
      $email = $stmt2->fetchAll();
      $values['email']=strip_tags($email);
      
-     $stmt3 = $db->prepare("SELECT birth_date from application1 where login = ? and id=?");
-     $stmt3->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt3 = $db->prepare("SELECT birth_date from application1 where id=?");
+     $stmt3->execute([$_SESSION['uid']]);
      $birth_date = $stmt3->fetchAll();
      $values['birth_date']=$birth_date;
      
-     $stmt4 = $db->prepare("SELECT sex from application1 where login = ? and id=?");
-     $stmt4->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt4 = $db->prepare("SELECT sex from application1 where id=?");
+     $stmt4->execute([$_SESSION['uid']]);
      $sex = $stmt4->fetchAll();
      $values['sex']=$sex;
      
-     $stmt5 = $db->prepare("SELECT amount_of_limbs from application1 where login = ? and id=?");
-     $stmt5->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt5 = $db->prepare("SELECT amount_of_limbs from application1 where id=?");
+     $stmt5->execute([$_SESSION['uid']]);
      $amount_of_limbs = $stmt5->fetchAll();
      $values['amount_of_limbs']=$amount_of_limbs;
      
-     $stmt6 = $db->prepare("SELECT ab_id from application1 join application_ability on (application1.id=application_ability.app_id) where login = ? and id=?");
-     $stmt6->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt6 = $db->prepare("SELECT ab_id from application1 join application_ability on (application1.id=application_ability.app_id) where id=?");
+     $stmt6->execute([$_SESSION['uid']]);
      $abilities = serialize($stmt6->fetchAll());
      $values['abilities']=unserialize($abilities);
      
-     $stmt7 = $db->prepare("SELECT biography from application1 where login = ? and id=?");
-     $stmt7->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt7 = $db->prepare("SELECT biography from application1 where id=?");
+     $stmt7->execute([$_SESSION['uid']]);
      $biography = $stmt7->fetchAll();
      $values['biography']=strip_tags($biography);
      
-     $stmt8 = $db->prepare("SELECT informed from application1 where login = ? and id=?");
-     $stmt8->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt8 = $db->prepare("SELECT informed from application1 where id=?");
+     $stmt8->execute([$_SESSION['uid']]);
      $informed = $stmt8->fetchAll();
      $values['informed']=$informed;
      
-     $stmt9 = $db->prepare("SELECT password from application1 where login = ? and id=?");
-     $stmt9->execute([$_SESSION['login'],$_SESSION['uid']]);
+     $stmt9 = $db->prepare("SELECT password from application1 where id=?");
+     $stmt9->execute([$_SESSION['uid']]);
      $password = $stmt9->fetchAll();
      $values['password']=$password;
      
@@ -158,20 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       //удаление кук сессии
       setcookie('login', '', 100000);
       setcookie('password', '', 100000);
-      
-      
-      //
-      setcookie('name_value', '', 100000);
-      setcookie('email_value', '', 100000);
-      setcookie('birthDate_value', '', 100000);
-      setcookie('sex_value', '', 100000);
-      setcookie('amountOfLimbs_value_value', '', 100000);
-      setcookie('abilities_value', '', 100000);
-      setcookie('informed_value', '', 100000);
-      setcookie('biography_value', '', 100000);
-      //
-      
-      
     }
   }
   
