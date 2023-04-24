@@ -158,6 +158,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       //удаление кук сессии
       setcookie('login', '', 100000);
       setcookie('password', '', 100000);
+      
+      
+      //
+      setcookie('name_value', '', 100000);
+      setcookie('email_value', '', 100000);
+      setcookie('birthDate_value', '', 100000);
+      setcookie('sex_value', '', 100000);
+      setcookie('amountOfLimbs_value_value', '', 100000);
+      setcookie('abilities_value', '', 100000);
+      setcookie('informed_value', '', 100000);
+      setcookie('biography_value', '', 100000);
+      //
+      
+      
     }
   }
   
