@@ -73,9 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   
   $values['name'] = empty($_COOKIE['name_value']) ? '' : strip_tags($_COOKIE['name_value']);
   $values['email'] = empty($_COOKIE['email_value']) ? '' : strip_tags($_COOKIE['email_value']);
-  $values['birth_date'] = empty($_COOKIE['birthDate_value']) ? '' : $_COOKIE['birthDate_value'];
+  $values['birth_date'] = empty($_COOKIE['birthDate_value']) ? '' : (int) $_COOKIE['birthDate_value'];
   $values['sex'] = empty($_COOKIE['sex_value']) ? '' : $_COOKIE['sex_value'];
-  $values['amount_of_limbs'] = empty($_COOKIE['amountOfLimbs_value']) ? '' : $_COOKIE['amountOfLimbs_value'];
+  $values['amount_of_limbs'] = empty($_COOKIE['amountOfLimbs_value']) ? '' : (int) $_COOKIE['amountOfLimbs_value'];
   $values['abilities'] = empty($_COOKIE['abilities_value']) ? '' : unserialize($_COOKIE['abilities_value']);
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_COOKIE['biography_value']);
   $values['informed'] = empty($_COOKIE['informed_value']) ? '' : $_COOKIE['informed_value'];
