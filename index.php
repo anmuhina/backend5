@@ -93,14 +93,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // и заполнить переменную $values,
     // предварительно санитизовав.
      
-    setcookie('name_value', '', 100000);
+    /*setcookie('name_value', '', 100000);
     setcookie('email_value', '', 100000);
     setcookie('birthDate_value', '', 100000);
     setcookie('sex_value', '', 100000);
     setcookie('amountOfLimbs_value', '', 100000);
     setcookie('abilities_value', '', 100000);
     setcookie('biography_value', '', 100000);
-    setcookie('informed_value', '', 100000);
+    setcookie('informed_value', '', 100000);*/
      
      $user = 'u52811';
      $pass = '8150350';
@@ -195,8 +195,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         strip_tags($_COOKIE['login']),
         strip_tags($_COOKIE['password']));
       //удаление кук сессии
-      setcookie('login', '', 100000);
-      setcookie('password', '', 100000);
+      setcookie('name_value', '', 100000);
+    setcookie('email_value', '', 100000);
+    setcookie('birthDate_value', '', 100000);
+    setcookie('sex_value', '', 100000);
+    setcookie('amountOfLimbs_value', '', 100000);
+    setcookie('abilities_value', '', 100000);
+    setcookie('biography_value', '', 100000);
+    setcookie('informed_value', '', 100000);
+      //setcookie('login', '', 100000);
+      //setcookie('password', '', 100000);
     }
   }
   
