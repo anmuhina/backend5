@@ -63,13 +63,14 @@ else {
   $sth = $db->prepare("select login, id, password from application1 where login=? and password=?");
   $sth->execute([$login, $password]);
   $res1 = $sth->fetchAll();
-  if (!$res1 || empty($res1[0]['id'])) {
+  //if (!$res1 || empty($res1[0]['id'])) {
+  if (!$res1) {
     echo '<p class="error">Нет такого пользователя! Проверьте корректность введенных логина и пароля.</p>';
   }
   else {
     // Если все ок, то авторизуем пользователя.
     echo '<p> Поздравляем, вы прошли авторизацию!</p>';
-    $_SESSION['login'] = $_POST['login'];
+    $_SESSION['login'] = $login;
 
     // Записываем ID пользователя.
     //$stmt=$db->prepare("select id from application1 where login=?");
