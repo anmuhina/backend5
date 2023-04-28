@@ -17,7 +17,8 @@ if (!empty($_SESSION['login'])) {
   //session_destroy();
   
   // Делаем перенаправление на форму.
-  header('Location: ./');
+  //header('Location: ./');
+  header('Location: form.php');
 }
   
   
