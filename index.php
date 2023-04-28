@@ -104,10 +104,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // и заполнить переменную $values,
     // предварительно санитизовав.
      
-     $user = 'u52811';
+     /*$user = 'u52811';
      $pass = '8150350';
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
-       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
+       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); */
      
      /*$stmt1 = $db->prepare("SELECT name from application1 where id=?");
      $stmt1->execute([$_SESSION['uid']]);
@@ -285,10 +285,10 @@ else {
     // TODO: перезаписать данные в БД новыми данными,
     // кроме логина и пароля.
     
-     $user = 'u52811';
+     /*$user = 'u52811';
      $pass = '8150350';
      $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
-       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
+       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); */
     
     //$log=serialize($_SESSION['login']);
     $uid=$_SESSION['uid'];
@@ -335,10 +335,11 @@ else {
     // TODO: Сохранение данных формы, логина и хеш md5() пароля в базу данных.
     // ...
     
-    $user = 'u52811';
+    /*$user = 'u52811';
     $pass = '8150350';
     $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
-      [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
+      [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); */
+    
     try {
       $stmt = $db->prepare("INSERT INTO application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ?, informed = ?, login = ?, password = ?");
       $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], 1, $login, md5($password)]);
