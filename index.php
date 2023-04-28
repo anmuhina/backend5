@@ -11,6 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('save', '', 100000);
     setcookie('login', '', 100000);
     setcookie('password', '', 100000);
+    
+    
+    setcookie('name_value', '', 100000);
+    setcookie('email_value', '', 100000);
+    setcookie('birthDate_value', '', 100000);
+    setcookie('sex_value', '', 100000);
+    setcookie('amountOfLimbs_value', '', 100000);
+    setcookie('abilities_value', '', 100000);
+    setcookie('biography_value', '', 100000);
+    setcookie('informed_value', '', 100000);
+    
+    
     // Выводим сообщение пользователю.
     $messages[] = 'Спасибо, результаты сохранены.';
     // Если в куках есть пароль, то выводим сообщение.
