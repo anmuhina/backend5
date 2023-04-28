@@ -13,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('password', '', 100000);
     
     
-    setcookie('name_value', '', 100000);
+    /*setcookie('name_value', '', 100000);
     setcookie('email_value', '', 100000);
     setcookie('birthDate_value', '', 100000);
     setcookie('sex_value', '', 100000);
     setcookie('amountOfLimbs_value', '', 100000);
     setcookie('abilities_value', '', 100000);
     setcookie('biography_value', '', 100000);
-    setcookie('informed_value', '', 100000);
+    setcookie('informed_value', '', 100000);*/
     
     
     // Выводим сообщение пользователю.
@@ -170,12 +170,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $values['sex']=$res[0]['sex'];
      $values['amount_of_limbs']=$res[0]['amount_of_limbs'];
      
-     $arr = array();
+     /*$arr = array();
      for ($i = 0; $i < $rows; $i++) {
        $arr[]=$res[$i]['ab_id'];
      }
      $arr1=serialize($arr);
-     $values['abilities']=unserialize($arr1);
+     $values['abilities']=unserialize($arr1);*/
      
      $values['biography']=$res[0]['biography'];
      $values['informed']=$res[0]['informed'];
