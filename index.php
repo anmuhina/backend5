@@ -13,18 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('save', '', 100000);
     setcookie('login', '', 100000);
     setcookie('password', '', 100000);
-    
-    
-    /*setcookie('name_value', '', 100000);
-    setcookie('email_value', '', 100000);
-    setcookie('birthDate_value', '', 100000);
-    setcookie('sex_value', '', 100000);
-    setcookie('amountOfLimbs_value', '', 100000);
-    setcookie('abilities_value', '', 100000);
-    setcookie('biography_value', '', 100000);
-    setcookie('informed_value', '', 100000);*/
-    
-    
     // Выводим сообщение пользователю.
     $messages[] = 'Спасибо, результаты сохранены.';
     // Если в куках есть пароль, то выводим сообщение.
@@ -106,11 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // и заполнить переменную $values,
     // предварительно санитизовав.
      
-     /*$user = 'u52811';
-     $pass = '8150350';
-     $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
-       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); */
-     
      /*$stmt1 = $db->prepare("SELECT name from application1 where id=?");
      $stmt1->execute([$_SESSION['uid']]);
      $name = $stmt1->fetchAll();
@@ -166,11 +149,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $stmt->execute([$log]);
      $res=$stmt->fetchAll();
      $rows=$res->num_rows;
-     $values['name']=$res[0]['name'];
-     $values['email']=$res[0]['email'];
-     $values['birth_date']=$res[0]['birth_date'];
+     $values['name']=strip_tags($res[0]['name']);
+     $values['email']=strip_tags($res[0]['email']);
+     $values['birth_date']=(int)$res[0]['birth_date'];
      $values['sex']=$res[0]['sex'];
-     $values['amount_of_limbs']=$res[0]['amount_of_limbs'];
+     $values['amount_of_limbs']=(int)$res[0]['amount_of_limbs'];
      
      $arr = array();
      for ($i = 0; $i < $rows; $i++) {
@@ -179,12 +162,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $arr1=serialize($arr);
      $values['abilities']=unserialize($arr1);
      
-     $values['biography']=$res[0]['biography'];
+     $values['biography']=strip_tags($res[0]['biography']);
      $values['informed']=$res[0]['informed'];
-     
-     
-    
-     //$values = ["name"=>strip_tags($name), "email"=>strip_tags($email), "birth_date"=>$birth_date, "amount_of_limbs"=>$amount_of_limbs, "abilities"=>$abilities, "biography"=>strip_tags($biography), "informed"=>$informed, "login"=>$_SESSION['login'], "password"=>$password];
      
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
@@ -286,12 +265,7 @@ else {
       session_start() && !empty($_SESSION['login'])) {
     // TODO: перезаписать данные в БД новыми данными,
     // кроме логина и пароля.
-    
-     /*$user = 'u52811';
-     $pass = '8150350';
-     $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
-       [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); */
-    
+   
     //$log=serialize($_SESSION['login']);
     $uid=$_SESSION['uid'];
     
@@ -336,12 +310,6 @@ else {
 
     // TODO: Сохранение данных формы, логина и хеш md5() пароля в базу данных.
     // ...
-    
-    /*$user = 'u52811';
-    $pass = '8150350';
-    $db = new PDO('mysql:host=localhost;dbname=u52811', $user, $pass,
-      [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); */
-    
     try {
       $stmt = $db->prepare("INSERT INTO application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ?, informed = ?, login = ?, password = ?");
       $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], 1, $login, md5($password)]);
