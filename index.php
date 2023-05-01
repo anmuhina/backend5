@@ -293,6 +293,8 @@ else {
         $stmt = $db->prepare("INSERT INTO application-ability SET app_id=?,ab_id=?");
         foreach ($abilities as $ability) {
           $stmt->execute([$app_id, $ability]);
+        }
+      }
     }
     catch (PDOException $e) {
        print('Error : ' . $e->getMessage());
