@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if (!empty($abilities)) {
         //$values['abilities'] =  serialize($abilities);
         //$values['abilities'] =  unserialize($abil1);
-        $values['abilities'] =  unserialize($abilities);
+        $values['abilities'] =  $abilities;
       }
       if (!empty($result[0]['biography'])) {
         $values['biography'] = strip_tags($result[0]['biography']);
