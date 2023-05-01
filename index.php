@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
       $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      $abil1=serialize($abilities);
+     // $abil1=serialize($abilities);
         
       if (!empty($result[0]['name'])) {
         $values['name'] = strip_tags($result[0]['name']);
@@ -117,8 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if (!empty($abilities)) {
-        //$values['abilities'] =  serialize($abilities);
-        $values['abilities'] =  unserialize($abil1);
+        $values['abilities'] =  serialize($abilities);
+        //$values['abilities'] =  unserialize($abil1);
       }
       if (!empty($result[0]['biography'])) {
         $values['biography'] = strip_tags($result[0]['biography']);
@@ -245,7 +245,7 @@ else {
       $stmt->execute([$app_id]);
       $ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
       if (array_diff($ab, $_POST['abilities'])) {
-        $stmt = $db->prepare("DELETE * FROM application_ability WHERE app_id = ?");
+        $stmt = $db->prepare("DELETE FROM application_ability WHERE app_id = ?");
         $stmt->execute([$app_id]);
         $stmt = $db->prepare("INSERT INTO application_ability SET app_id=?,ab_id=?");
         foreach ($_POST['abilities'] as $ability) {
