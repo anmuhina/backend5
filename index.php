@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['biography'] = !empty($_COOKIE['biography_error']);
   $errors['informed'] = !empty($_COOKIE['informed_error']);
   
-  
   // Выдаем сообщения об ошибках.
   if ($errors['name']) {
     // Удаляем куку, указывая время устаревания в прошлом.
@@ -76,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
   // Складываем предыдущие значения полей в массив, если есть.
   $values = array();
-  
   $values['name'] = empty($_COOKIE['name_value']) ? '' : strip_tags($_COOKIE['name_value']);
   $values['email'] = empty($_COOKIE['email_value']) ? '' : strip_tags($_COOKIE['email_value']);
   $values['birth_date'] = empty($_COOKIE['birthDate_value']) ? '' : (int) $_COOKIE['birthDate_value'];
@@ -90,31 +88,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // TODO: загрузить данные пользователя из БД
     // и заполнить переменную $values,
     // предварительно санитизовав.
-     
      $log=$_SESSION['login'];
-     
       try {
       $stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
       $stmt->execute([$log]);
       $app_id = $stmt->fetchColumn();
-      //$app_id = $stmt->fetchAll();
-
-
-      /*$stmt = $db->prepare("SELECT id,name,email,birth_date,sex,amount_of_limbs,biography,informed FROM application1 WHERE login = ?");
-      $stmt->execute([$log]);*/
-        
       $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,biography,informed FROM application1 WHERE id = ?");
       $stmt->execute([$app_id]);
-        
-      //$app_id = $stmt->fetchColumn();
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      //$result = $stmt->fetchAll();
-
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
       $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      //$abilities = $stmt->fetchAll();
-
       if (!empty($result[0]['name'])) {
         $values['name'] = strip_tags($result[0]['name']);
       }
@@ -144,39 +128,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print('Error : ' . $e->getMessage());
         exit();
     }
-     
-     /*$stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where login=?");
-     $stmt->execute([$log]);
-     $res=$stmt->fetchAll();
-     $rows=$res->num_rows;
-     $values['name']=strip_tags($res[0]['name']);
-     $values['email']=strip_tags($res[0]['email']);
-     $values['birth_date']=(int)$res[0]['birth_date'];
-     $values['sex']=$res[0]['sex'];
-     $values['amount_of_limbs']=(int)$res[0]['amount_of_limbs'];
-     
-     $arr = array();
-     for ($i = 0; $i < $rows; $i++) {
-       $arr[]=$res[$i]['ab_id'];
-     }
-     $arr1=serialize($arr);
-     $values['abilities']=unserialize($arr1);
-     
-     $values['biography']=strip_tags($res[0]['biography']);
-     $values['informed']=$res[0]['informed'];*/
-     
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
   include('form.php');
 }
-
 
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
   $errors = FALSE;
   if(isset($_POST["abilities"])) {
     $abil = $_POST["abilities"]; }
-    
   if (empty($_POST['name']) || !preg_match('/^([a-zA-Z\'\-]+\s*|[а-яА-ЯёЁ\'\-]+\s*)$/u', $_POST['name'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('name_error', '1', time() + 24 * 60 * 60);
@@ -186,7 +147,6 @@ else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
   }
-  //
   if (empty($_POST['email']) || !preg_match('/^((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})$/u', $_POST['email'])) {
     setcookie('email_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
@@ -268,28 +228,20 @@ else {
       session_start() && !empty($_SESSION['login'])) {
     // TODO: перезаписать данные в БД новыми данными,
     // кроме логина и пароля.
-   
     $log=$_SESSION['login'];
     $uid=$_SESSION['uid'];
-    
     try {
       $stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
       $stmt->execute([$log]);
-      //$app_id = $stmt->fetchColumn();
-      $app_id = $stmt->fetchAll();
-      
+      $app_id = $stmt->fetchColumn();
       $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? WHERE id = ?"); 
       $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], $uid]);
-      
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
-      //$ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      $ab = $stmt->fetchAll();
-
+      $ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
       if (array_diff($ab, $abil)) {
         $stmt = $db->prepare("DELETE FROM application_ability WHERE app_id = ?");
         $stmt->execute([$app_id]);
-
         $stmt = $db->prepare("INSERT INTO application_ability SET app_id=?,ab_id=?");
         foreach ($abil as $ability) {
           $stmt->execute([$app_id, $ability]);
@@ -301,7 +253,6 @@ else {
        exit();
     }
   }
-    
     
     /*try {
       $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where app_id=$uid");
@@ -327,7 +278,6 @@ else {
     // Сохраняем в Cookies.
     setcookie('login', $login);
     setcookie('password', $password);
-
     // TODO: Сохранение данных формы, логина и хеш md5() пароля в базу данных.
     // ...
     try {
