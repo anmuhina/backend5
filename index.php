@@ -86,12 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_COOKIE['biography_value']);
   $values['informed'] = empty($_COOKIE['informed_value']) ? '' : $_COOKIE['informed_value'];
   
-  //$values['login'] = empty($_COOKIE['login']) ? '' : $_COOKIE['login'];
-  //$values['password'] = empty($_COOKIE['password']) ? '' : $_COOKIE['password'];
   
-  
-   //if (empty($errors) && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
-   if (count(array_filter($errors)) === 0 && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
+   if (empty($errors) && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
+   //if (count(array_filter($errors)) === 0 && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
   
     // TODO: загрузить данные пользователя из БД
     // и заполнить переменную $values,
