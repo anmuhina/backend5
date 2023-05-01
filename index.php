@@ -139,8 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
   $errors = FALSE;
-  if(isset($_POST["abilities"])) {
-    $abil = $_POST["abilities"]; }
+  
+  /*if(isset($_POST["abilities"])) {
+    $abil = $_POST["abilities"]; }*/
+  
   if (empty($_POST['name']) || !preg_match('/^([a-zA-Z\'\-]+\s*|[а-яА-ЯёЁ\'\-]+\s*)$/u', $_POST['name'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('name_error', '1', time() + 24 * 60 * 60);
@@ -242,12 +244,17 @@ else {
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
       $ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      if (array_diff($ab, $abil)) {
-        $stmt = $db->prepare("DELETE FROM application_ability WHERE app_id = ?");
+      if (array_diff($ab, $_POST['abilities'])) {
+        $stmt = $db->prepare("DELETE * FROM application_ability WHERE app_id = ?");
         $stmt->execute([$app_id]);
         $stmt = $db->prepare("INSERT INTO application_ability SET app_id=?,ab_id=?");
-        foreach ($abil as $ability) {
-          $stmt->execute([$app_id, $ability]);
+        foreach ($_POST['abilities'] as $ability) {
+          if ($ability=='Бессмертие')
+          {$stmt -> execute([$app_id, 10]);}
+          else if ($ability=='Прохождение сквозь стены')
+          {$stmt -> execute([$app_id, 20]);}
+          else if ($ability=='Левитация')
+          {$stmt -> execute([$app_id, 30]);}
         }
       }
     }
@@ -257,22 +264,6 @@ else {
     }
   }
     
-    /*try {
-      $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where app_id=$uid");
-      foreach ($_POST['abilities'] as $ability) {
-        if ($ability=='Бессмертие')
-        {$stmt -> execute([$app_id, 10]);}
-        else if ($ability=='Прохождение сквозь стены')
-        {$stmt -> execute([$app_id, 20]);}
-        else if ($ability=='Левитация')
-        {$stmt -> execute([$app_id, 30]);}
-      }
-    }
-    catch (PDOException $e) {
-       print('Error : ' . $e->getMessage());
-       exit();
-    }*/
-  
   else {
     // Генерируем уникальный логин и пароль.
     // TODO: сделать механизм генерации, например функциями rand(), uniquid(), md5(), substr().
