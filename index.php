@@ -96,8 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       try {
       $stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
       $stmt->execute([$log]);
-      //$app_id = $stmt->fetchColumn();
-        $app_id = $stmt->fetchAll();
+      $app_id = $stmt->fetchColumn();
+      //$app_id = $stmt->fetchAll();
 
 
       /*$stmt = $db->prepare("SELECT id,name,email,birth_date,sex,amount_of_limbs,biography,informed FROM application1 WHERE login = ?");
@@ -107,13 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt->execute([$app_id]);
         
       //$app_id = $stmt->fetchColumn();
-      //$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      $result = $stmt->fetchAll();
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      //$result = $stmt->fetchAll();
 
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
-      //$abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      $abilities = $stmt->fetchAll();
+      $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+      //$abilities = $stmt->fetchAll();
 
       if (!empty($result[0]['name'])) {
         $values['name'] = strip_tags($result[0]['name']);
