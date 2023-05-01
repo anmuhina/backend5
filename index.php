@@ -295,7 +295,7 @@ else {
         $stmt->execute([$app_id]);
 
         $stmt = $db->prepare("INSERT INTO application-ability SET app_id=?,ab_id=?");
-        foreach ($abilities as $ability) {
+        foreach ($abil as $ability) {
           $stmt->execute([$app_id, $ability]);
         }
       }
