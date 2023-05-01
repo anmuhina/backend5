@@ -115,9 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if (!empty($abilities)) {
-        $values['abilities'] =  serialize($abilities);
-        //$values['abilities'] =  unserialize($abil1);
-        //$values['abilities'] =  $abilities;
+        $values['abilities'] =  $abilities;
       }
       if (!empty($result[0]['biography'])) {
         $values['biography'] = strip_tags($result[0]['biography']);
