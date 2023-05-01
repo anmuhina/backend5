@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,biography,informed FROM application1 WHERE id = ?");
       $stmt->execute([$app_id]);
         
-      $app_id = $stmt->fetchColumn();
+      //$app_id = $stmt->fetchColumn();
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
       //$result = $stmt->fetchAll();
 
@@ -126,13 +126,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['email'] = strip_tags($result[0]['email']);
       }
       if (!empty($result[0]['birth_date'])) {
-        $values['birth_date'] = (int)$result[0]['birth_date'];
+        $values['birth_date'] = $result[0]['birth_date'];
       }
       if (!empty($result[0]['sex'])) {
         $values['sex'] = $result[0]['sex'];
       }
       if (!empty($result[0]['amount_of_limbs'])) {
-        $values['amount_of_limbs'] = (int)$result[0]['amount_of_limbs'];
+        $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if (!empty($abilities)) {
         $values['abilities'] =  serialize($abilities);
