@@ -98,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
-      $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-     // $abil1=serialize($abilities);
+      //$abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        $abilities = $stmt->fetchArray();
         
       if (!empty($result[0]['name'])) {
         $values['name'] = strip_tags($result[0]['name']);
