@@ -90,7 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   //$values['password'] = empty($_COOKIE['password']) ? '' : $_COOKIE['password'];
   
   
-   if (empty($errors) && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
+   //if (empty($errors) && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
+   if (count(array_filter($errors)) === 0 && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
+  
     // TODO: загрузить данные пользователя из БД
     // и заполнить переменную $values,
     // предварительно санитизовав.
