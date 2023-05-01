@@ -90,8 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   //$values['password'] = empty($_COOKIE['password']) ? '' : $_COOKIE['password'];
   
   
-   if (empty($errors) && !empty($_COOKIE[session_name()]) &&
-      session_start() && !empty($_SESSION['login'])) {
+   if (empty($errors) && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
     // TODO: загрузить данные пользователя из БД
     // и заполнить переменную $values,
     // предварительно санитизовав.
@@ -101,8 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       try {
       /*$stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
       $stmt->execute([$log]);
-      //$app_id = $stmt->fetchColumn();
-      $app_id=$stmt->fetchAll();*/
+      $app_id = $stmt->fetchColumn();*/
 
       $stmt = $db->prepare("SELECT id,name,email,birth_date,sex,amount_of_limbs,biography,informed FROM application1 WHERE login = ?");
       $stmt->execute([$log]);
@@ -140,8 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if (!empty($result[0]['informed'])) {
         $values['informed'] = $result[0]['informed'];
       }
-
-    } catch (PDOException $e) {
+    } 
+    catch (PDOException $e) {
         print('Error : ' . $e->getMessage());
         exit();
     }
@@ -176,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 else {
   $errors = FALSE;
   if(isset($_POST["abilities"])) {
-    $abilities = $_POST["abilities"];
+    $abilities = $_POST["abilities"]; }
     
   if (empty($_POST['name']) || !preg_match('/^([a-zA-Z\'\-]+\s*|[а-яА-ЯёЁ\'\-]+\s*)$/u', $_POST['name'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
@@ -274,17 +272,18 @@ else {
     $uid=$_SESSION['uid'];
     
     try {
-    $stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
+      $stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
       $stmt->execute([$log]);
       //$app_id = $stmt->fetchColumn();
       $app_id = $stmt->fetchAll();
       
-    $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? WHERE id = ?"); 
-    $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], $uid]);
+      $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? WHERE id = ?"); 
+      $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], $uid]);
       
       $stmt = $db->prepare("SELECT ab_id FROM application-ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
-      $ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+      //$ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+      $ab = $stmt->fetchAll();
 
       if (array_diff($ab, $abilities)) {
         $stmt = $db->prepare("DELETE FROM application-ability WHERE app_id = ?");
@@ -300,8 +299,8 @@ else {
        print('Error : ' . $e->getMessage());
        exit();
     }
+  }
     
-    //$app_id = $db->lastInsertId();
     
     /*try {
       $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where app_id=$uid");
@@ -318,9 +317,6 @@ else {
        print('Error : ' . $e->getMessage());
        exit();
     }*/
-    
-    
-  }
   
   else {
     // Генерируем уникальный логин и пароль.
@@ -365,7 +361,6 @@ else {
       print('Error : ' . $e->getMessage());
       exit();
     }
-    
   }
   // Сохраняем куку с признаком успешного сохранения.
   setcookie('save', '1');
