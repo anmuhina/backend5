@@ -117,8 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if (!empty($abilities)) {
-        $values['abilities'] =  serialize($abilities);
+        //$values['abilities'] =  serialize($abilities);
         //$values['abilities'] =  unserialize($abil1);
+        $values['abilities'] =  unserialize($abilities);
       }
       if (!empty($result[0]['biography'])) {
         $values['biography'] = strip_tags($result[0]['biography']);
@@ -139,10 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
   $errors = FALSE;
-  
-  /*if(isset($_POST["abilities"])) {
-    $abil = $_POST["abilities"]; }*/
-  
   if (empty($_POST['name']) || !preg_match('/^([a-zA-Z\'\-]+\s*|[а-яА-ЯёЁ\'\-]+\s*)$/u', $_POST['name'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('name_error', '1', time() + 24 * 60 * 60);
