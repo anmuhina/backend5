@@ -86,10 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_COOKIE['biography_value']);
   $values['informed'] = empty($_COOKIE['informed_value']) ? '' : $_COOKIE['informed_value'];
   
-  
-   if (empty($errors) && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
-   //if (count(array_filter($errors)) === 0 && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
-  
+   if (count(array_filter($errors)) === 0 && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
     // TODO: загрузить данные пользователя из БД
     // и заполнить переменную $values,
     // предварительно санитизовав.
@@ -99,7 +96,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       try {
       $stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
       $stmt->execute([$log]);
-      $app_id = $stmt->fetchColumn();
+      //$app_id = $stmt->fetchColumn();
+        $app_id = $stmt->fetchAll();
+
 
       /*$stmt = $db->prepare("SELECT id,name,email,birth_date,sex,amount_of_limbs,biography,informed FROM application1 WHERE login = ?");
       $stmt->execute([$log]);*/
@@ -108,13 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt->execute([$app_id]);
         
       //$app_id = $stmt->fetchColumn();
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      //$result = $stmt->fetchAll();
+      //$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
 
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
-      $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      //$abilities = $stmt->fetchAll();
+      //$abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+      $abilities = $stmt->fetchAll();
 
       if (!empty($result[0]['name'])) {
         $values['name'] = strip_tags($result[0]['name']);
