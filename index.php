@@ -179,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 else {
   $errors = FALSE;
   if(isset($_POST["abilities"])) {
-    $abilities = $_POST["abilities"]; }
+    $abil = $_POST["abilities"]; }
     
   if (empty($_POST['name']) || !preg_match('/^([a-zA-Z\'\-]+\s*|[а-яА-ЯёЁ\'\-]+\s*)$/u', $_POST['name'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
@@ -290,7 +290,7 @@ else {
       //$ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
       $ab = $stmt->fetchAll();
 
-      if (array_diff($ab, $abilities)) {
+      if (array_diff($ab, $abil)) {
         $stmt = $db->prepare("DELETE FROM application-ability WHERE app_id = ?");
         $stmt->execute([$app_id]);
 
