@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         strip_tags($_COOKIE['login']),
         strip_tags($_COOKIE['password']));
     }
+    setcookie('login', '', 100000);
+    setcookie('password', '', 100000);
   }
     
   // Складываем признак ошибок в массив.
@@ -94,58 +96,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // и заполнить переменную $values,
     // предварительно санитизовав.
      
-     /*$stmt1 = $db->prepare("SELECT name from application1 where id=?");
-     $stmt1->execute([$_SESSION['uid']]);
-     $name = $stmt1->fetchAll();
-     $values['name']=strip_tags($name);
-     
-     $stmt2 = $db->prepare("SELECT email from application1 where id=?");
-     $stmt2->execute([$_SESSION['uid']]);
-     $email = $stmt2->fetchAll();
-     $values['email']=strip_tags($email);
-     
-     $stmt3 = $db->prepare("SELECT birth_date from application1 where id=?");
-     $stmt3->execute([$_SESSION['uid']]);
-     $birth_date = $stmt3->fetchAll();
-     $values['birth_date']=$birth_date;
-     
-     $stmt4 = $db->prepare("SELECT sex from application1 where id=?");
-     $stmt4->execute([$_SESSION['uid']]);
-     $sex = $stmt4->fetchAll();
-     $values['sex']=$sex;
-     
-     $stmt5 = $db->prepare("SELECT amount_of_limbs from application1 where id=?");
-     $stmt5->execute([$_SESSION['uid']]);
-     $amount_of_limbs = $stmt5->fetchAll();
-     $values['amount_of_limbs']=$amount_of_limbs;
-     
-     $stmt6 = $db->prepare("SELECT ab_id from application1 join application_ability on (application1.id=application_ability.app_id) where id=?");
-     $stmt6->execute([$_SESSION['uid']]);
-     $abilities = serialize($stmt6->fetchAll());
-     $values['abilities']=unserialize($abilities);
-     
-     $stmt7 = $db->prepare("SELECT biography from application1 where id=?");
-     $stmt7->execute([$_SESSION['uid']]);
-     $biography = $stmt7->fetchAll();
-     $values['biography']=strip_tags($biography);
-     
-     $stmt8 = $db->prepare("SELECT informed from application1 where id=?");
-     $stmt8->execute([$_SESSION['uid']]);
-     $informed = $stmt8->fetchAll();
-     $values['informed']=$informed;
-     
-     $stmt9 = $db->prepare("SELECT password from application1 where id=?");
-     $stmt9->execute([$_SESSION['uid']]);
-     $password = $stmt9->fetchAll();
-     $values['password']=$password;
-     
-     $values['login']=$_SESSION['login'];*/
-     
-     
-     //$uid=$_SESSION['uid'];
      $log=$_SESSION['login'];
      
-     $stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where login=?");
+      try {
+      /*$stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
+      $stmt->execute([$log]);
+      //$app_id = $stmt->fetchColumn();
+      $app_id=$stmt->fetchAll();*/
+
+      $stmt = $db->prepare("SELECT id,name,email,birth_date,sex,amount_of_limbs,biography,informed FROM application1 WHERE login = ?");
+      $stmt->execute([$log]);
+        
+      $app_id = $stmt->fetchColumn();
+      //$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+
+      $stmt = $db->prepare("SELECT ab_id FROM application-ability WHERE app_id = ?");
+      $stmt->execute([$app_id]);
+      //$abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+      $abilities = $stmt->fetchAll();
+
+      if (!empty($result[0]['name'])) {
+        $values['name'] = strip_tags($result[0]['name']);
+      }
+      if (!empty($result[0]['email'])) {
+        $values['email'] = strip_tags($result[0]['email']);
+      }
+      if (!empty($result[0]['birth_date'])) {
+        $values['birth_date'] = (int)$result[0]['birth_date'];
+      }
+      if (!empty($result[0]['sex'])) {
+        $values['sex'] = $result[0]['sex'];
+      }
+      if (!empty($result[0]['amount_of_limbs'])) {
+        $values['amount_of_limbs'] = (int)$result[0]['amount_of_limbs'];
+      }
+      if (!empty($abilities)) {
+        $values['abilities'] =  serialize($abilities);
+      }
+      if (!empty($result[0]['biography'])) {
+        $values['biography'] = strip_tags($result[0]['biography']);
+      }
+      if (!empty($result[0]['informed'])) {
+        $values['informed'] = $result[0]['informed'];
+      }
+
+    } catch (PDOException $e) {
+        print('Error : ' . $e->getMessage());
+        exit();
+    }
+     
+     /*$stmt = $db->prepare("SELECT name,email,birth_date,sex,amount_of_limbs,ab_id,biography,informed from application1 join application_ability on (application1.id=application_ability.app_id) where login=?");
      $stmt->execute([$log]);
      $res=$stmt->fetchAll();
      $rows=$res->num_rows;
@@ -163,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
      $values['abilities']=unserialize($arr1);
      
      $values['biography']=strip_tags($res[0]['biography']);
-     $values['informed']=$res[0]['informed'];
+     $values['informed']=$res[0]['informed'];*/
      
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
@@ -266,21 +267,38 @@ else {
     // TODO: перезаписать данные в БД новыми данными,
     // кроме логина и пароля.
    
-    //$log=serialize($_SESSION['login']);
+    $log=$_SESSION['login'];
     $uid=$_SESSION['uid'];
     
     try {
+    $stmt = $db->prepare("SELECT id FROM application1 WHERE login = ?");
+      $stmt->execute([$log]);
+      //$app_id = $stmt->fetchColumn();
+      $app_id = $stmt->fetchAll();
+      
     $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? WHERE id = ?"); 
     $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], $uid]);
+      
+      $stmt = $db->prepare("SELECT ab_id FROM application-ability WHERE app_id = ?");
+      $stmt->execute([$app_id]);
+      $ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+      if (array_diff($ab, $abilities)) {
+        $stmt = $db->prepare("DELETE FROM application-ability WHERE app_id = ?");
+        $stmt->execute([$app_id]);
+
+        $stmt = $db->prepare("INSERT INTO application-ability SET app_id=?,ab_id=?");
+        foreach ($abilities as $ability) {
+          $stmt->execute([$app_id, $ability]);
     }
     catch (PDOException $e) {
        print('Error : ' . $e->getMessage());
        exit();
     }
     
-    $app_id = $db->lastInsertId();
+    //$app_id = $db->lastInsertId();
     
-    try {
+    /*try {
       $stmt = $db->prepare("UPDATE application_ability SET app_id = ?, ab_id = ? where app_id=$uid");
       foreach ($_POST['abilities'] as $ability) {
         if ($ability=='Бессмертие')
@@ -294,7 +312,7 @@ else {
     catch (PDOException $e) {
        print('Error : ' . $e->getMessage());
        exit();
-    }
+    }*/
     
     
   }
