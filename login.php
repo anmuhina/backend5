@@ -5,17 +5,6 @@ header('Content-Type: text/html; charset=UTF-8');
 session_start();
 
 if (!empty($_SESSION['login'])) {
-  // Если есть логин в сессии, то пользователь уже авторизован.
-  // TODO: Сделать выход (окончание сессии вызовом session_destroy()
-  //при нажатии на кнопку Выход)
-     
-  echo '<p> Поздравляем, вы уже авторизованы! </p>';
-  
-  
-  //unset($_SESSION['uid']);
-  //unset($_SESSION['login']);
-  //session_destroy();
-  
   // Делаем перенаправление на форму.
   header('Location: ./');
 }
