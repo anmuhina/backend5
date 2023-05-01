@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
       //$result = $stmt->fetchAll();
 
-      $stmt = $db->prepare("SELECT ab_id FROM application-ability WHERE app_id = ?");
+      $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
       $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
       //$abilities = $stmt->fetchAll();
@@ -285,16 +285,16 @@ else {
       $stmt=$db->prepare("UPDATE application1 SET name = ?, email = ?, birth_date = ?, sex = ?, amount_of_limbs = ?, biography = ? WHERE id = ?"); 
       $stmt -> execute([$_POST['name'], $_POST['email'], $_POST['birth_date'], $_POST['sex'], $_POST['amount_of_limbs'], $_POST['biography'], $uid]);
       
-      $stmt = $db->prepare("SELECT ab_id FROM application-ability WHERE app_id = ?");
+      $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
       //$ab = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
       $ab = $stmt->fetchAll();
 
       if (array_diff($ab, $abil)) {
-        $stmt = $db->prepare("DELETE FROM application-ability WHERE app_id = ?");
+        $stmt = $db->prepare("DELETE FROM application_ability WHERE app_id = ?");
         $stmt->execute([$app_id]);
 
-        $stmt = $db->prepare("INSERT INTO application-ability SET app_id=?,ab_id=?");
+        $stmt = $db->prepare("INSERT INTO application_ability SET app_id=?,ab_id=?");
         foreach ($abil as $ability) {
           $stmt->execute([$app_id, $ability]);
         }
