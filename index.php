@@ -100,12 +100,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       //$stmt->execute([$app_id]);
         $res=$stmt->execute([$app_id]);
         
-         $abilities=[];
          if ($res) {
-            $i = 0;
+            $abilities=[];
             while ($row = $stmt->fetch()) {
-              $abilities[$i] = $row['ab_id'];
-              $i++;
+              $abilities[] = $row['ab_id'];
             }
          }
         
