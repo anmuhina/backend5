@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if ($res) {
         $abilities=[];
         //while($row = mysqli_fetch_assoc($res))
-        while($row = $res->fetch_assoc())
+        while($row = $res->fetch(PDO::FETCH_ASSOC))
         {
           $abilities[] = $row['ab_id'];
         }
