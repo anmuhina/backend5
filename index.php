@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if ($abilities) {
-        $values['abilities'] =  unserialize($abilities);
+        $values['abilities'] =  unserialize($res1);
       }
       if ($result[0]['biography']) {
         $values['biography'] = strip_tags($result[0]['biography']);
