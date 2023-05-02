@@ -98,8 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
-        
-        $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN);
+      $abil = $stmt->fetchAll(PDO::FETCH_COLUMN);
         
         //$resul=$stmt->execute([$app_id]);
         
@@ -137,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if ($result[0]['amount_of_limbs']) {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
-      if (!empty($abilities)) {
-        $values['abilities'] =  $abilities;
+      if (count($abil)>0) {
+        $values['abilities'] =  $abil;
       }
       if ($result[0]['biography']) {
         $values['biography'] = strip_tags($result[0]['biography']);
