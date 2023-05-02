@@ -102,10 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         
          if ($res) {
             $abilities=[];
+           $i=0;
             while ($row = $stmt->fetch()) {
-              $abilities[] = $row['ab_id'];
+              $abilities[$i] = $row['ab_id'];
+              $i++;
             }
-           $res1=serialize($abilities);
          }
         
       //$abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
@@ -133,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if ($abilities) {
-        $values['abilities'] =  unserialize($res1);
+        $values['abilities'] =  unserialize($abilities);
       }
       if ($result[0]['biography']) {
         $values['biography'] = strip_tags($result[0]['biography']);
