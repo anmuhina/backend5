@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if (count($abilities)>0) {
-        $values['abilities'] =  unserialize($abilities);
+        $values['abilities'] =  serialize($abilities);
       }
       if ($result[0]['biography']) {
         $values['biography'] = strip_tags($result[0]['biography']);
