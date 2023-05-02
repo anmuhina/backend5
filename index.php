@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       
         if ($stmt->execute([$app_id])) {
         $abilities=[];
-        while($row = $stmt->fetch(PDO::FETCH_COLUMN))
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         {
           $abilities[] = $row['ab_id'];
         }
@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
         
         if ($abilities) {
-          $values['abilities'] = $abilities;
+          $values['abilities'] = serialize($abilities);
         }
         
       if ($result[0]['biography']) {
