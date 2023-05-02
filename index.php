@@ -97,14 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt->execute([$app_id]);
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
-      //$stmt->execute([$app_id]);
+      $stmt->execute([$app_id]);
       //$abil = $stmt->fetchAll(PDO::FETCH_COLUMN);
         //$abil1=serialize($abil);
         
-        $res=$stmt->execute([$app_id]);
+        $res=$stmt->get_result();
         if ($res) {
         $abilities=[];
-        while($row = mysqli_fetch_assoc($res))
+        //while($row = mysqli_fetch_assoc($res))
+        while($row = $res->mysqli_fetch_assoc())
         {
           $abilities[] = $row['ab_id'];
         }
