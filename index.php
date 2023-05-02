@@ -102,10 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         //$abil1=serialize($abil);
         
         $res=$stmt->fetchAll();
+        $res1=serialize($res);
         if ($res) {
         $abilities=[];
         //while($row = mysqli_fetch_assoc($res))
-        while($row = $res->fetch(PDO :: FETCH_ASSOC))
+        while($row = $res1->fetch(PDO :: FETCH_ASSOC))
         {
           $abilities[] = $row['ab_id'];
         }
