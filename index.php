@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
         
         if ($abilities) {
-          $values['abilities'] = serialize($abilities);
+          $values['abilities'] = $abilities[];
         }
         
       if ($result[0]['biography']) {
