@@ -97,8 +97,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt->execute([$app_id]);
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
-      $stmt->execute([$app_id]);
-      $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+      //$stmt->execute([$app_id]);
+        $res=$stmt->execute([$app_id]);
+      //$abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        if ($res) {
+        $abilities=[];
+        while($row = mysqli_fetch_assoc($res))
+        {
+          $abilities[] = $row['ab_id'];
+        }
+        }
         
       /*if (!empty($result[0]['name'])) {
         $values['name'] = strip_tags($result[0]['name']);
@@ -140,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if ($result[0]['amount_of_limbs']) {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
-      if (count($abilities)>0) {
+      if ($abilities) {
         $values['abilities'] =  serialize($abilities);
       }
       if ($result[0]['biography']) {
