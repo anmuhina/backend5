@@ -124,8 +124,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       if ($result[0]['amount_of_limbs']) {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
-      if (count($abil)>0) {
-        $values['abilities'] =  unserialize($abil1);
+      if ($abil) {
+        //$values['abilities'] = unserialize($abil1);
+        $values['abilities'] = $abil1;
+
       }
       if ($result[0]['biography']) {
         $values['biography'] = strip_tags($result[0]['biography']);
