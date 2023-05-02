@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             while ($row = $stmt->fetch()) {
               $abilities[] = $row['ab_id'];
             }
+           $res1=serialize($abilities);
          }
         
       //$abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
@@ -116,32 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         }*/
         
-      /*if (!empty($result[0]['name'])) {
-        $values['name'] = strip_tags($result[0]['name']);
-      }
-      if (!empty($result[0]['email'])) {
-        $values['email'] = strip_tags($result[0]['email']);
-      }
-      if (!empty($result[0]['birth_date'])) {
-        $values['birth_date'] = $result[0]['birth_date'];
-      }
-      if (!empty($result[0]['sex'])) {
-        $values['sex'] = $result[0]['sex'];
-      }
-      if (!empty($result[0]['amount_of_limbs'])) {
-        $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
-      }
-      if (!empty($abilities)) {
-        $values['abilities'] =  $abilities;
-      }
-      if (!empty($result[0]['biography'])) {
-        $values['biography'] = strip_tags($result[0]['biography']);
-      }
-      if (!empty($result[0]['informed'])) {
-        $values['informed'] = $result[0]['informed'];
-      }*/
-        
-        if ($result[0]['name']) {
+      if ($result[0]['name']) {
         $values['name'] = strip_tags($result[0]['name']);
       }
       if ($result[0]['email']) {
@@ -157,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if ($abilities) {
-        $values['abilities'] =  serialize($abilities);
+        $values['abilities'] =  unserialize($abilities);
       }
       if ($result[0]['biography']) {
         $values['biography'] = strip_tags($result[0]['biography']);
