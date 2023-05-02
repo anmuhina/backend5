@@ -99,7 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       $stmt->execute([$app_id]);
       $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-      if (!empty($result[0]['name'])) {
+        
+      /*if (!empty($result[0]['name'])) {
         $values['name'] = strip_tags($result[0]['name']);
       }
       if (!empty($result[0]['email'])) {
@@ -122,7 +123,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
       if (!empty($result[0]['informed'])) {
         $values['informed'] = $result[0]['informed'];
+      }*/
+        
+        if ($result[0]['name']) {
+        $values['name'] = strip_tags($result[0]['name']);
       }
+      if ($result[0]['email']) {
+        $values['email'] = strip_tags($result[0]['email']);
+      }
+      if ($result[0]['birth_date']) {
+        $values['birth_date'] = $result[0]['birth_date'];
+      }
+      if ($result[0]['sex']) {
+        $values['sex'] = $result[0]['sex'];
+      }
+      if ($result[0]['amount_of_limbs']) {
+        $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
+      }
+      if (count($abilities)>0) {
+        $values['abilities'] =  unserialize($abilities);
+      }
+      if ($result[0]['biography']) {
+        $values['biography'] = strip_tags($result[0]['biography']);
+      }
+      if ($result[0]['informed']) {
+        $values['informed'] = $result[0]['informed'];
+      }
+        
     } 
     catch (PDOException $e) {
         print('Error : ' . $e->getMessage());
