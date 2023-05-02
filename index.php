@@ -98,9 +98,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
       //$stmt->execute([$app_id]);
+        $res=$stmt->execute([$app_id]);
         
          $abilities=[];
-         if ($stmt && $stmt->execute([$app_id])) {
+         if ($res) {
             $i = 0;
             while ($row = $stmt->fetch()) {
               $abilities[$i] = $row['ab_id'];
