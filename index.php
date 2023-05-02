@@ -115,13 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['email'] = strip_tags($result[0]['email']);
       }
       if ($result[0]['birth_date']) {
-        $values['birth_date'] = $result[0]['birth_date'];
+        $values['birth_date'] = (int) $result[0]['birth_date'];
       }
       if ($result[0]['sex']) {
         $values['sex'] = $result[0]['sex'];
       }
       if ($result[0]['amount_of_limbs']) {
-        $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
+        $values['amount_of_limbs'] = (int) $result[0]['amount_of_limbs'];
       }
         
         if ($abilities) {
