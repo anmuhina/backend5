@@ -100,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt->execute([$app_id]);
       $abil = $stmt->fetchAll(PDO::FETCH_COLUMN);
         
+        
         //$resul=$stmt->execute([$app_id]);
         
          /*$abilities=array();
@@ -137,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['amount_of_limbs'] = $result[0]['amount_of_limbs'];
       }
       if (count($abil)>0) {
-        $values['abilities'] =  $abil;
+        $values['abilities'] =  serialize($abil);
       }
       if ($result[0]['biography']) {
         $values['biography'] = strip_tags($result[0]['biography']);
