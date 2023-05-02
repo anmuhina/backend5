@@ -101,7 +101,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $resul=$stmt->execute([$app_id]);
         
          $abilities=array();
-         if ($resul) {
+        if (!$resul) {
+              print_r($stmt->errorInfo());
+        }
+         else {
             //$abilities=[];
            $i=0;
             while ($row = $resul->fetch()) {
