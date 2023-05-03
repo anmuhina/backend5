@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $abilities=[];
         while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         {
-          $abilities[] = $row['ab_id'];
+          $abilities[] = $row[0];
         }
         }
         
