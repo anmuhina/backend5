@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           $abilities[] = $row['ab_id'];
         }
         }
-        $abil=serialize($abilities);
+        //$abil=serialize($abilities);
         
       if ($result[0]['name']) {
         $values['name'] = strip_tags($result[0]['name']);
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
         
         if ($abilities) {
-          $values['abilities'] = $abil;
+          $values['abilities'] = $abilities;
         }
         
       if ($result[0]['biography']) {
