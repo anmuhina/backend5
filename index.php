@@ -97,24 +97,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt->execute([$app_id]);
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-      //$stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
-      ////$stmt->execute([$app_id]);
-        
-       $query = sprintf("SELECT ab_id FROM application_ability WHERE app_id = '%d'",
-       $db->real_escape_string($app_id));
-       $result = $db->query($query);
-       $abilities=[];
-       while ($row = $result->fetch_assoc()) {
-         $abilities[] = $row["ab_id"];
-       }
+      $stmt = $db->prepare("SELECT ab_id FROM application_ability WHERE app_id = ?");
+      //$stmt->execute([$app_id]);
       
-        /*if ($stmt->execute([$app_id])) {
+        if ($stmt->execute([$app_id])) {
         $abilities=[];
         while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         {
           $abilities[] = $row['ab_id'];
         }
-        }*/
+        }
+        $abil=serialize($abilities);
         
       if ($result[0]['name']) {
         $values['name'] = strip_tags($result[0]['name']);
@@ -133,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
         
         if ($abilities) {
-          $values['abilities'] = $abilities;
+          $values['abilities'] = $abil;
         }
         
       if ($result[0]['biography']) {
