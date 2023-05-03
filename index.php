@@ -102,10 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       
         if ($stmt->execute([$app_id])) {
         $abilities=[];
-        while($row = $stmt->fetchAll(PDO::FETCH_ASSOC))
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         {
-          //$abilities[] = $row['ab_id'];
-          $abilities[] = $row[0];
+          $abilities[] = $row['ab_id'];
         }
         }
         
