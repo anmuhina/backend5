@@ -14,6 +14,7 @@ if (!empty($messages)) {
 ?>
 
 <form action="" class="forma" method="POST">
+    <input type="hidden" name="CSRFToken" value="l5824xNMAYFesBxing975yR8HPJlHZ">
     <label>
         Имя:<br>
         <input id="data" name="name" placeholder="Введите Ваше имя" <?php if ($errors['name']) {print 'class="error"';} ?> value="<?php print $values['name']; ?>" >
