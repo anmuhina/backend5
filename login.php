@@ -2,6 +2,7 @@
 
 header('Content-Type: text/html; charset=UTF-8');
 
+ini_set('session.gc_maxlifetime', 86400);
 session_start();
 
 if (!empty($_SESSION['login'])) {
